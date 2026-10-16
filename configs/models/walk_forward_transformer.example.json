@@ -1,0 +1,27 @@
+{
+  "family": "transformer",
+  "input_root": "data/features",
+  "output_root": "data/models",
+  "providers": ["binance"],
+  "symbols": ["BTCUSDT"],
+  "target_column": "forward_return_1_bar",
+  "initial_train_rows": 256,
+  "validation_rows": 64,
+  "step_rows": 64,
+  "embargo_rows": 0,
+  "purge_rows": 1,
+  "minimum_rows": 320,
+  "transformer": {
+    "lookback": 32,
+    "d_model": 64,
+    "nhead": 4,
+    "num_layers": 2,
+    "dim_feedforward": 128,
+    "dropout": 0.1,
+    "batch_size": 32,
+    "epochs": 20,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "device": "cpu"
+  }
+}

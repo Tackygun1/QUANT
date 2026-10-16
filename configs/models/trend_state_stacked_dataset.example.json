@@ -1,0 +1,25 @@
+{
+  "input_root": "data/features",
+  "prediction_root": "data/models/walk_forward",
+  "output_root": "data/features",
+  "input_dataset_name": "market_supervised",
+  "output_dataset_name": "market_trend_state_stacked",
+  "providers": ["coinbase"],
+  "symbols": ["BTC-USD"],
+  "prediction_sources": [
+    {
+      "family": "tabular",
+      "model_name": "histgb_trend_state",
+      "alias": "trend_state",
+      "source_columns": [
+        "prediction",
+        "prediction_trend_state_margin",
+        "prediction_probability_downtrend",
+        "prediction_probability_chop",
+        "prediction_probability_uptrend",
+        "prediction_probability_max",
+        "prediction_confidence"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "quant"
+version = "0.1.0"
+description = "Python-first market data collection and trading research codebase."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+  "websockets>=12,<16",
+]
+
+[project.optional-dependencies]
+ml = [
+  "numpy>=1.26",
+  "scikit-learn>=1.5",
+]
+stack = [
+  "numpy>=1.26",
+  "scikit-learn>=1.5",
+  "lightgbm>=4.5",
+]
+deep = [
+  "numpy>=1.26",
+  "torch>=2.3",
+]
+full = [
+  "numpy>=1.26",
+  "scikit-learn>=1.5",
+  "lightgbm>=4.5",
+  "torch>=2.3",
+]
+dev = [
+  "coverage[toml]>=7,<8",
+  "pytest>=8,<9",
+  "ruff>=0.8,<1",
+]
+
+[project.scripts]
+quant-collect-market-data = "quant.ingestion.cli:main"
+quant-backfill-binance-historical = "quant.ingestion.binance_historical_cli:main"
+quant-backfill-coinbase-historical = "quant.ingestion.coinbase_historical_cli:main"
+quant-stage-market-data = "quant.ingestion.staging_cli:main"
+quant-build-market-features = "quant.features.market_features_cli:main"
+quant-build-market-labels = "quant.labels.market_labels_cli:main"
+quant-build-supervised-dataset = "quant.training.supervised_dataset_cli:main"
+quant-build-stacked-dataset = "quant.training.stacked_dataset_cli:main"
+quant-run-market-viewer = "quant.monitoring.market_viewer_cli:main"
+quant-run-model-backtest = "quant.backtesting.model_backtest_cli:main"
+quant-run-paper-trader = "quant.execution.paper_trading_cli:main"
+quant-train-tabular-models = "quant.training.train_tabular_cli:main"
+quant-train-transformer = "quant.training.train_transformer_cli:main"
+quant-train-meta-models = "quant.training.train_meta_cli:main"
+quant-run-walk-forward = "quant.validation.walk_forward_cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+
+[tool.coverage.run]
+branch = true
+source = ["quant"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+
+[tool.ruff]
+line-length = 140
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]

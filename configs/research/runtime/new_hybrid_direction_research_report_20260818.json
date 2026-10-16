@@ -1,0 +1,33 @@
+{
+  "title": "Calibrated Hybrid Transformer-LightGBM Bitcoin Strategy: Walk-Forward and Cost-Aware Evaluation",
+  "output_dir": "reports/research/new_hybrid_direction_model_20260818",
+  "bar_minutes": 5,
+  "bootstrap_samples": 5000,
+  "bootstrap_block_bars": 24,
+  "random_seed": 20260818,
+  "fee_sensitivity_bps": [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 4.0, 5.0, 7.5, 10.0],
+  "final_artifact_dir": "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/models/ensembles/lightgbm_hybrid_direction_meta/coinbase/BTC-USD/20260817T133444Z",
+  "final_validation_backtest_dir": "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/reports/validation/lightgbm_hybrid_direction_meta/coinbase/BTC-USD/20260817T133527Z",
+  "oof_artifact_dir": "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/models/walk_forward/meta_models/lightgbm_hybrid_direction_meta/coinbase/BTC-USD/20260818T004349Z",
+  "oof_original_backtest_dir": "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/reports/oof_final/lightgbm_hybrid_direction_meta/coinbase/BTC-USD/20260818T004408Z",
+  "oof_selected_backtest_dir": "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/reports/profit_per_trade_tuning_boundary/20260818T012122Z/recommended_backtest/lightgbm_hybrid_direction_meta/coinbase/BTC-USD/20260818T012127Z",
+  "oof_selected_stress_backtest_dir": "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/reports/profit_per_trade_tuning_boundary/20260818T012122Z/recommended_stress_backtest/lightgbm_hybrid_direction_meta/coinbase/BTC-USD/20260818T012128Z",
+  "oof_evaluation_summary_path": "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/state/oof_evaluation_summary_20260818.json",
+  "retrain_summary_path": "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/state/retrain_summary.json",
+  "tuning_summary_path": "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/reports/profit_per_trade_tuning_boundary/20260818T012122Z/summary.json",
+  "random_baseline_summary_path": "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/reports/random_guess_comparison/20260818T005608Z/summary.json",
+  "random_baseline_simulations_path": "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/reports/random_guess_comparison/20260818T005608Z/simulations.csv",
+  "forward_evaluation_summary_path": "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/reports/untouched_execution_test_20260818/summary.json",
+  "forward_original_backtest_dirs": [
+    "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/reports/untouched_execution_test_20260818/20260416_to_20260420/original_1p5/lightgbm_hybrid_direction_meta/coinbase/BTC-USD/20260818T024743Z",
+    "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/reports/untouched_execution_test_20260818/20260420_to_20260422/original_1p5/lightgbm_hybrid_direction_meta/coinbase/BTC-USD/20260818T024743Z"
+  ],
+  "forward_selected_backtest_dirs": [
+    "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/reports/untouched_execution_test_20260818/20260416_to_20260420/selected_1p5/lightgbm_hybrid_direction_meta/coinbase/BTC-USD/20260818T024743Z",
+    "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/reports/untouched_execution_test_20260818/20260420_to_20260422/selected_1p5/lightgbm_hybrid_direction_meta/coinbase/BTC-USD/20260818T024743Z"
+  ],
+  "forward_prediction_artifact_dirs": [
+    "experiments/out_of_sample/coinbase/BTC-USD/frozen_margin_fast_strict_promoted_20260422T005857Z/evaluations/lightgbm_hybrid_direction_meta/20260817T133444Z",
+    "experiments/out_of_sample/coinbase/BTC-USD/fresh_100k_20260422T020345Z/evaluations/lightgbm_hybrid_direction_meta/20260817T133444Z"
+  ]
+}

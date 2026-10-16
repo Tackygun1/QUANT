@@ -1,0 +1,42 @@
+{
+  "clean_start": false,
+  "data": {
+    "candle_interval": "5m",
+    "candle_start_time": "2026-01-13T03:52:56Z",
+    "end_time": "2026-04-13T03:52:56Z",
+    "product": "BTC-USD",
+    "provider": "coinbase",
+    "request_pause_seconds": 0.02,
+    "request_timeout_seconds": 20.0,
+    "trade_start_time": "2026-04-10T03:52:56Z"
+  },
+  "search": {
+    "duration_hours": 8.0,
+    "elite_count": 2,
+    "fee_bps": 1.0,
+    "initial_random_candidates": 3,
+    "minimum_rows": 512,
+    "model_cycle": [
+      "histgb_return",
+      "ridge_return",
+      "histgb_return",
+      "transformer_return_forecaster"
+    ],
+    "mutation_power": 0.35,
+    "retry_attempts": 3,
+    "retry_pause_seconds": 20.0,
+    "seed": 7,
+    "sizing": {
+      "max_abs_position": 1.0,
+      "signal_scale_bps": 5.0,
+      "signal_threshold_bps": 0.5,
+      "volatility_column": "rolling_return_std_5_bar",
+      "volatility_floor": 0.0005,
+      "volatility_target": 0.0015
+    },
+    "slippage_bps": 0.5,
+    "transformer_recent_rows": 2048,
+    "validation_fraction": 0.2
+  },
+  "workspace_root": "experiments/overnight/coinbase/BTC-USD/20260413T035256Z"
+}

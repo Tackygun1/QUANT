@@ -1,0 +1,24 @@
+{
+  "artifact_dirs": [
+    "experiments/overnight/coinbase/BTC-USD/20260413T035256Z/models/evolution/histgb_return/13787_20260413T100349Z",
+    "experiments/overnight/coinbase/BTC-USD/20260413T035256Z/models/evolution/transformer_return_forecaster/05428_20260413T062918Z",
+    "experiments/overnight/coinbase/BTC-USD/20260413T035256Z/models/evolution/ridge_return/00042_20260413T041134Z"
+  ],
+  "candle_interval": "5m",
+  "clean_start": true,
+  "fee_bps": 1.0,
+  "holdout_root": "experiments/overnight/coinbase/BTC-USD/20260413T035256Z/untouched_holdout/20260413T125039Z",
+  "provider": "coinbase",
+  "sizing": {
+    "max_abs_position": 1.0,
+    "signal_scale_bps": 5.0,
+    "signal_threshold_bps": 0.5,
+    "volatility_column": "rolling_return_std_5_bar",
+    "volatility_floor": 0.0005,
+    "volatility_target": 0.0015
+  },
+  "slippage_bps": 0.5,
+  "source_workspace_root": "experiments/overnight/coinbase/BTC-USD/20260413T035256Z",
+  "symbol": "BTC-USD",
+  "warmup_bars": 64
+}

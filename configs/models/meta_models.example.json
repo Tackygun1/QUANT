@@ -1,0 +1,51 @@
+{
+  "input_root": "data/features",
+  "output_root": "data/models",
+  "dataset_name": "market_hybrid_stacked",
+  "providers": ["binance"],
+  "symbols": ["BTCUSDT"],
+  "model_names": [
+    "lightgbm_hybrid_return_meta",
+    "lightgbm_hybrid_direction_meta",
+    "lightgbm_hybrid_tradeability_meta"
+  ],
+  "validation_fraction": 0.25,
+  "minimum_rows": 64,
+  "model_params": {
+    "lightgbm_hybrid_return_meta": {
+      "learning_rate": 0.05,
+      "n_estimators": 200,
+      "num_leaves": 31,
+      "min_child_samples": 20,
+      "subsample": 1.0,
+      "colsample_bytree": 1.0,
+      "reg_alpha": 0.0,
+      "reg_lambda": 0.0,
+      "random_state": 7
+    },
+    "lightgbm_hybrid_direction_meta": {
+      "learning_rate": 0.05,
+      "n_estimators": 200,
+      "num_leaves": 31,
+      "min_child_samples": 20,
+      "subsample": 1.0,
+      "colsample_bytree": 1.0,
+      "reg_alpha": 0.0,
+      "reg_lambda": 0.0,
+      "class_weight": "balanced",
+      "random_state": 7
+    },
+    "lightgbm_hybrid_tradeability_meta": {
+      "learning_rate": 0.05,
+      "n_estimators": 200,
+      "num_leaves": 31,
+      "min_child_samples": 20,
+      "subsample": 1.0,
+      "colsample_bytree": 1.0,
+      "reg_alpha": 0.0,
+      "reg_lambda": 0.0,
+      "class_weight": "balanced",
+      "random_state": 7
+    }
+  }
+}

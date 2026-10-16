@@ -1,0 +1,10 @@
+{
+  "symbols": ["BTCUSDT"],
+  "channels": ["candles"],
+  "start_time": "2026-04-12T00:00:00Z",
+  "end_time": "2026-04-12T12:00:00Z",
+  "output_root": "data/historical_demo/raw",
+  "candle_interval": "1m",
+  "request_timeout_seconds": 20.0,
+  "request_pause_seconds": 0.05
+}

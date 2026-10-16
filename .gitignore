@@ -1,0 +1,56 @@
+# Operating system noise
+.DS_Store
+Thumbs.db
+
+# Editor settings
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.p12
+*.crt
+
+# Logs and caches
+*.log
+=4.5
+.cache/
+.tmp/
+tmp/
+coverage/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+
+# Common dependency directories
+node_modules/
+.venv/
+venv/
+vendor/
+
+# Common build outputs
+.codex
+build/
+dist/
+out/
+target/
+
+# Python
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# JavaScript / TypeScript
+*.tsbuildinfo

@@ -1,0 +1,16 @@
+# Ignore generated datasets and artifacts by default.
+*
+!/.gitignore
+!/README.md
+!/backtests/
+!/backtests/.gitkeep
+!/features/
+!/features/.gitkeep
+!/models/
+!/models/.gitkeep
+!/paper/
+!/paper/.gitkeep
+!/raw/
+!/raw/.gitkeep
+!/staging/
+!/staging/.gitkeep

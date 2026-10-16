@@ -1,0 +1,34 @@
+{
+  "input_root": "data/features",
+  "output_root": "data/models",
+  "dataset_name": "market_executable_trend_stacked",
+  "providers": ["coinbase"],
+  "symbols": ["BTC-USD"],
+  "model_names": ["lightgbm_hybrid_direction_meta"],
+  "feature_groups": [
+    "baseline_core",
+    "trend_regime_layer",
+    "hybrid_transformer_oof",
+    "fast_trend_state_oof",
+    "slow_trend_state_oof",
+    "fast_triple_barrier_oof"
+  ],
+  "validation_fraction": 0.25,
+  "minimum_rows": 256,
+  "sample_weight_scheme": "hmm_regime_target_balance",
+  "regime_change_boost": 1.25,
+  "model_params": {
+    "lightgbm_hybrid_direction_meta": {
+      "learning_rate": 0.03,
+      "n_estimators": 250,
+      "num_leaves": 15,
+      "min_child_samples": 30,
+      "subsample": 0.9,
+      "colsample_bytree": 0.9,
+      "reg_alpha": 0.05,
+      "reg_lambda": 0.2,
+      "class_weight": "balanced",
+      "random_state": 7
+    }
+  }
+}

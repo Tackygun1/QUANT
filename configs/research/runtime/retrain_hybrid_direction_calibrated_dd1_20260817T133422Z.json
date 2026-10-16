@@ -1,0 +1,45 @@
+{
+  "calibration_model_names": [
+    "lightgbm_hybrid_direction_meta"
+  ],
+  "dataset_name": "market_hybrid_stacked_meta_only_zones",
+  "input_root": "experiments/retrains/coinbase/BTC-USD/20260607T195625Z_supply_zones/features",
+  "minimum_calibration_rows": 512,
+  "minimum_rows": 512,
+  "model_names": [
+    "lightgbm_hybrid_direction_meta"
+  ],
+  "model_params": {
+    "lightgbm_hybrid_direction_meta": {
+      "class_weight": "balanced",
+      "colsample_bytree": 0.7371,
+      "feature_fraction_bynode": 0.5,
+      "learning_rate": 0.05,
+      "max_depth": 3,
+      "min_child_samples": 96,
+      "min_split_gain": 0.1,
+      "n_estimators": 120,
+      "num_leaves": 15,
+      "path_smooth": 20.0,
+      "random_state": 108,
+      "reg_alpha": 0.05,
+      "reg_lambda": 5.0,
+      "subsample": 0.6
+    }
+  },
+  "output_root": "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/models",
+  "probability_calibration_fraction": 0.15,
+  "probability_calibration_method": "temperature",
+  "providers": [
+    "coinbase"
+  ],
+  "regime_change_boost": 1.25,
+  "regime_change_threshold": 0.35,
+  "sample_weight_cap": 3.0,
+  "sample_weight_floor": 0.5,
+  "sample_weight_scheme": "hmm_regime_target_balance",
+  "symbols": [
+    "BTC-USD"
+  ],
+  "validation_fraction": 0.2
+}

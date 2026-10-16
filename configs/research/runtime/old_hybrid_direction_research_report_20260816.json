@@ -1,0 +1,16 @@
+{
+  "artifact_dir": "experiments/overnight/coinbase/BTC-USD/20260416T022703Z/models/evolution/lightgbm_hybrid_direction_meta/00108_20260416T094527Z",
+  "bar_minutes": 5,
+  "bootstrap_block_bars": 24,
+  "bootstrap_samples": 5000,
+  "fresh_low_turnover_backtest_dir": "reports/walk_forward/low_turnover_hybrid_direction/fresh_20260420_20260422/full_low_turnover/lightgbm_hybrid_direction_meta/coinbase/BTC-USD/20260816T195237Z",
+  "fresh_original_backtest_dir": "reports/walk_forward/low_turnover_hybrid_direction/fresh_20260420_20260422/full_original/lightgbm_hybrid_direction_meta/coinbase/BTC-USD/20260816T195320Z",
+  "fresh_prediction_artifact_dir": "experiments/out_of_sample/coinbase/BTC-USD/fresh_100k_20260422T020345Z/evaluations/lightgbm_hybrid_direction_meta/00108_20260416T094527Z",
+  "fee_sensitivity_bps": [0.0, 0.5, 1.0, 1.5, 2.0, 3.0, 5.0, 7.5, 10.0],
+  "output_dir": "reports/research/old_hybrid_direction_model_20260816",
+  "random_seed": 108,
+  "title": "Cost-Aware Evaluation of a Hybrid Transformer-LightGBM Bitcoin Directional Strategy",
+  "validation_low_turnover_backtest_dir": "reports/backtests/low_turnover_hybrid_direction/lightgbm_hybrid_direction_meta/coinbase/BTC-USD/20260816T193744Z",
+  "validation_original_backtest_dir": "reports/adhoc_hold_until_releases/code_baseline_releases/lightgbm_hybrid_direction_meta/coinbase/BTC-USD/20260607T194048Z",
+  "walk_forward_summary_path": "reports/walk_forward/low_turnover_hybrid_direction/fresh_20260420_20260422/walk_forward_summary.json"
+}

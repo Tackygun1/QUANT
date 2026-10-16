@@ -1,0 +1,55 @@
+{
+  "input_root": "data/features",
+  "output_root": "data/models",
+  "dataset_name": "market_supervised",
+  "providers": ["coinbase"],
+  "symbols": ["BTC-USD"],
+  "minimum_rows": 512,
+  "feature_groups": [
+    "baseline_core",
+    "trend_regime_layer"
+  ],
+  "target_columns": [
+    "forward_return_1_bar",
+    "forward_return_6_bar",
+    "forward_return_24_bar",
+    "forward_return_96_bar"
+  ],
+  "auxiliary_target_columns": [
+    "future_trend_state_label_6_bar",
+    "future_trend_state_label_24_bar",
+    "triple_barrier_label_6_bar"
+  ],
+  "sample_weight_scheme": "hmm_regime_target_balance",
+  "sample_weight_target_column": "future_trend_state_label_24_bar",
+  "regime_change_column": "regime_bocpd_change_prob",
+  "regime_change_threshold": 0.35,
+  "regime_change_boost": 1.25,
+  "sample_weight_floor": 0.5,
+  "sample_weight_cap": 3.0,
+  "transformer": {
+    "lookback": 96,
+    "backbone": "timemixer",
+    "d_model": 64,
+    "nhead": 4,
+    "num_layers": 2,
+    "dim_feedforward": 128,
+    "dropout": 0.1,
+    "batch_size": 32,
+    "epochs": 16,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "validation_fraction": 0.25,
+    "device": "cpu",
+    "horizons": [1, 6, 24, 96],
+    "quantiles": [0.1, 0.5, 0.9],
+    "scales": [1, 2, 4, 8],
+    "mixer_layers": 2,
+    "auxiliary_loss_weight": 0.1,
+    "auxiliary_loss_weights": {
+      "future_trend_state_label_6_bar": 1.0,
+      "future_trend_state_label_24_bar": 1.5,
+      "triple_barrier_label_6_bar": 0.5
+    }
+  }
+}

@@ -1,0 +1,10 @@
+# Default ownership for this repository.
+* @takygun
+
+# Keep review coverage explicit for operational surfaces.
+/.github/ @takygun
+/configs/ @takygun
+/docs/ @takygun
+/scripts/ @takygun
+/src/quant/ @takygun
+/tests/ @takygun

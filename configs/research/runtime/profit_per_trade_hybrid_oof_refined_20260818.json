@@ -1,0 +1,44 @@
+{
+  "fixed_target_positions": [
+    0.0,
+    0.25
+  ],
+  "forecast_gate_profiles": [
+    {
+      "enabled": false,
+      "fast_threshold_bps": 3.0,
+      "slow_threshold_bps": 5.0
+    }
+  ],
+  "margin_thresholds": [
+    0.12,
+    0.14,
+    0.15
+  ],
+  "minimum_hold_bars": [
+    6,
+    12,
+    18
+  ],
+  "minimum_rebalance_deltas": [
+    0.075,
+    0.1,
+    0.125,
+    0.15
+  ],
+  "output_root": "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/reports/profit_per_trade_tuning_refined",
+  "reference_artifact_dir": "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/models/walk_forward/meta_models/lightgbm_hybrid_direction_meta/coinbase/BTC-USD/20260818T004349Z",
+  "reference_backtest_dir": "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/reports/oof_final/lightgbm_hybrid_direction_meta/coinbase/BTC-USD/20260818T004408Z",
+  "requirements": {
+    "maximum_best_fold_profit_share": 0.4,
+    "maximum_drawdown": 0.01,
+    "minimum_entries": 100,
+    "minimum_median_fold_return": 0.0,
+    "minimum_net_edge_per_turnover_bps": 2.5,
+    "minimum_positive_folds": 9,
+    "minimum_stress_net_return": 0.0,
+    "minimum_traded_folds": 12,
+    "stress_total_cost_bps": 3.0
+  },
+  "stress_fallback_candidates": 20
+}

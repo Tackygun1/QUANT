@@ -1,0 +1,8 @@
+{
+  "provider": "binance",
+  "products": ["BTCUSDT", "ETHUSDT"],
+  "channels": ["trades", "book_ticker", "level2", "candles"],
+  "output_root": "data/raw",
+  "candle_interval": "1m",
+  "max_backoff_seconds": 30.0
+}

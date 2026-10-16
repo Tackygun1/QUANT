@@ -1,0 +1,60 @@
+{
+  "input_root": "data/features",
+  "output_root": "data/models",
+  "providers": ["binance"],
+  "symbols": ["BTCUSDT"],
+  "model_names": [
+    "ridge_return",
+    "logistic_direction",
+    "histgb_return",
+    "histgb_direction",
+    "histgb_trend_state_fast",
+    "histgb_trend_state",
+    "histgb_triple_barrier_fast"
+  ],
+  "validation_fraction": 0.34,
+  "minimum_rows": 128,
+  "target_overrides": {
+    "ridge_return": "forward_return_1_bar",
+    "logistic_direction": "direction_label_1_bar",
+    "histgb_return": "forward_return_1_bar",
+    "histgb_direction": "direction_label_1_bar",
+    "histgb_trend_state_fast": "future_trend_state_label_6_bar",
+    "histgb_trend_state": "future_trend_state_label_24_bar",
+    "histgb_triple_barrier_fast": "triple_barrier_label_6_bar"
+  },
+  "model_params": {
+    "ridge_return": {
+      "alpha": 1.0
+    },
+    "logistic_direction": {
+      "max_iter": 1000,
+      "class_weight": "balanced"
+    },
+    "histgb_return": {
+      "max_depth": 4,
+      "learning_rate": 0.05,
+      "max_iter": 200
+    },
+    "histgb_direction": {
+      "max_depth": 4,
+      "learning_rate": 0.05,
+      "max_iter": 200
+    },
+    "histgb_trend_state_fast": {
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "max_iter": 150
+    },
+    "histgb_trend_state": {
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "max_iter": 150
+    },
+    "histgb_triple_barrier_fast": {
+      "max_depth": 3,
+      "learning_rate": 0.05,
+      "max_iter": 150
+    }
+  }
+}

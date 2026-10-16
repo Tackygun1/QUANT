@@ -1,0 +1,17 @@
+{
+  "input_root": "data/features",
+  "output_root": "reports/trend_label_diagnostics",
+  "dataset_name": "market_supervised",
+  "providers": ["coinbase"],
+  "symbols": ["BTC-USD"],
+  "horizons": [6, 24, 48, 96],
+  "label_columns": [
+    "future_trend_state_label_6_bar",
+    "future_trend_state_label_24_bar",
+    "future_trend_break_label_24_bar",
+    "future_trend_persistence_label_24_bar",
+    "triple_barrier_label_6_bar"
+  ],
+  "slope_dead_zone_bps_per_bar_candidates": [0.25, 0.5, 0.75, 1.0],
+  "slope_tstat_threshold_candidates": [0.5, 1.0, 1.5, 2.0]
+}

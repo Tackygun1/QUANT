@@ -1,0 +1,38 @@
+{
+  "artifact_dir": "experiments/overnight/coinbase/BTC-USD/20260413T233130Z/models/evolution/histgb_return/00292_20260414T004411Z",
+  "artifact_search_root": "experiments/overnight/coinbase/BTC-USD/20260413T233130Z/models",
+  "source_data_root": "experiments/overnight/coinbase/BTC-USD/20260413T233130Z/features",
+  "replay_root": "data/replay/demo",
+  "provider": "coinbase",
+  "symbol": "BTC-USD",
+  "feature_date": "2026-04-12",
+  "step_delay_seconds": 0.15,
+  "start_row": 0,
+  "max_rows": 160,
+  "paper": {
+    "candle_interval": "5m",
+    "fee_bps": 1.0,
+    "slippage_bps": 0.5,
+    "take_profit_multiple": 1.0,
+    "sizing": {
+      "volatility_column": "rolling_return_std_5_bar",
+      "volatility_target": 0.0015,
+      "volatility_floor": 0.0005,
+      "max_abs_position": 1.0,
+      "signal_threshold_bps": 0.5,
+      "signal_scale_bps": 5.0,
+      "max_trade_risk_fraction": 0.01,
+      "stop_loss_sigma": 2.0,
+      "stop_loss_floor_bps": 20.0,
+      "max_position_change": 1.0,
+      "max_daily_loss_fraction": 0.02,
+      "max_portfolio_drawdown_fraction": 0.1,
+      "classification_stale_exit_margin_threshold": 0.1,
+      "hold_until_stop_or_take_profit": true,
+      "profit_take_exit_multiple": 1.0,
+      "max_hold_bars": 12,
+      "stale_exit_bars": 10,
+      "trend_filter_exit_enabled": true
+    }
+  }
+}

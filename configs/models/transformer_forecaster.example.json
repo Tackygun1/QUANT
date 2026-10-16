@@ -1,0 +1,22 @@
+{
+  "input_root": "data/features",
+  "output_root": "data/models",
+  "providers": ["binance"],
+  "symbols": ["BTCUSDT"],
+  "target_column": "forward_return_1_bar",
+  "minimum_rows": 512,
+  "transformer": {
+    "lookback": 32,
+    "d_model": 64,
+    "nhead": 4,
+    "num_layers": 2,
+    "dim_feedforward": 128,
+    "dropout": 0.1,
+    "batch_size": 32,
+    "epochs": 20,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "validation_fraction": 0.25,
+    "device": "cpu"
+  }
+}

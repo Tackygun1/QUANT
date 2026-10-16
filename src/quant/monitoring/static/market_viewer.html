@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>QUANT Market Viewer</title>
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+    <style>
+      :root {
+        --bg: #f2eee7;
+        --paper: #fffaf0;
+        --ink: #17211c;
+        --muted: #5a675f;
+        --accent: #0d5c63;
+        --accent-soft: #d8ebe6;
+        --up: #1f7a5a;
+        --down: #b6462f;
+        --border: #c6d0c7;
+        --shadow: 0 20px 60px rgba(18, 27, 22, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "IBM Plex Sans", "Avenir Next", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, rgba(13, 92, 99, 0.12), transparent 28%),
+          radial-gradient(circle at bottom right, rgba(182, 70, 47, 0.08), transparent 30%),
+          var(--bg);
+      }
+
+      .shell {
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 28px 20px 36px;
+      }
+
+      .hero {
+        display: grid;
+        gap: 18px;
+        margin-bottom: 20px;
+      }
+
+      .eyebrow {
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      h1 {
+        margin: 0;
+        font-family: "Iowan Old Style", "Palatino Linotype", serif;
+        font-size: clamp(2.3rem, 4vw, 4.2rem);
+        line-height: 0.96;
+        max-width: 10ch;
+      }
+
+      .lead {
+        max-width: 70ch;
+        color: var(--muted);
+        font-size: 1rem;
+        line-height: 1.55;
+        margin: 0;
+      }
+
+      .panel {
+        background: color-mix(in srgb, var(--paper) 88%, white 12%);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        box-shadow: var(--shadow);
+      }
+
+      .controls {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        padding: 18px;
+        margin-bottom: 18px;
+      }
+
+      .control {
+        display: grid;
+        gap: 8px;
+      }
+
+      .control label {
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      select, button {
+        width: 100%;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        background: white;
+        color: var(--ink);
+        padding: 12px 14px;
+        font: inherit;
+      }
+
+      button {
+        background: var(--accent);
+        color: white;
+        cursor: pointer;
+        border: 0;
+        align-self: end;
+      }
+
+      .summary-grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        margin-bottom: 18px;
+      }
+
+      .summary-card {
+        padding: 18px;
+      }
+
+      .summary-label {
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+
+      .summary-value {
+        font-size: 1.6rem;
+        font-weight: 700;
+      }
+
+      .chart-panel {
+        padding: 10px;
+        margin-bottom: 18px;
+      }
+
+        #chart {
+        width: 100%;
+        min-height: 620px;
+      }
+
+      #paper-chart {
+        width: 100%;
+        min-height: 320px;
+      }
+
+      .table-panel {
+        padding: 14px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th, td {
+        text-align: left;
+        padding: 10px 8px;
+        border-bottom: 1px solid rgba(198, 208, 199, 0.7);
+        font-size: 0.92rem;
+      }
+
+      th {
+        color: var(--muted);
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .pill {
+        display: inline-block;
+        min-width: 32px;
+        text-align: center;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+
+      .pill.long {
+        background: rgba(31, 122, 90, 0.12);
+        color: var(--up);
+      }
+
+      .pill.short {
+        background: rgba(182, 70, 47, 0.12);
+        color: var(--down);
+      }
+
+      .pill.flat {
+        background: rgba(90, 103, 95, 0.12);
+        color: var(--muted);
+      }
+
+      .status {
+        color: var(--muted);
+        font-size: 0.94rem;
+        margin-bottom: 12px;
+      }
+
+      @media (max-width: 720px) {
+        .shell {
+          padding: 18px 14px 28px;
+        }
+
+        h1 {
+          max-width: none;
+        }
+
+        #chart {
+          min-height: 520px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <section class="hero">
+        <div class="eyebrow">QUANT Local Viewer</div>
+        <h1>Market candles, volume, and training labels.</h1>
+        <p class="lead">
+          This viewer reads the joined supervised dataset built from your market features and labels.
+          It plots candles and volume, then overlays paper entries, stop-loss levels, take-profit levels,
+          and exit hits so you can watch the current paper-trading loop behave like an actual trading blotter.
+        </p>
+      </section>
+
+      <section class="panel controls">
+        <div class="control">
+          <label for="provider">Provider</label>
+          <select id="provider"></select>
+        </div>
+        <div class="control">
+          <label for="symbol">Symbol</label>
+          <select id="symbol"></select>
+        </div>
+        <div class="control">
+          <label for="date">Date</label>
+          <select id="date"></select>
+        </div>
+        <div class="control">
+          <label>&nbsp;</label>
+          <button id="load">Load Dataset</button>
+        </div>
+        <div class="control">
+          <label for="refresh-seconds">Auto Refresh</label>
+          <select id="refresh-seconds">
+            <option value="0">Manual</option>
+            <option value="0.25">250 ms</option>
+            <option value="0.5" selected>500 ms</option>
+            <option value="1">1 Second</option>
+            <option value="3">3 Seconds</option>
+            <option value="5">5 Seconds</option>
+            <option value="15">15 Seconds</option>
+          </select>
+        </div>
+        <div class="control">
+          <label for="simulation-speed">Simulation Speed</label>
+          <select id="simulation-speed">
+            <option value="pause">Paused</option>
+            <option value="0">Instant</option>
+            <option value="0.03">Ultra Fast</option>
+            <option value="0.08">Fast</option>
+            <option value="0.15" selected>Normal</option>
+            <option value="0.35">Slow</option>
+            <option value="1">Very Slow</option>
+          </select>
+        </div>
+        <div class="control">
+          <label>&nbsp;</label>
+          <button id="apply-speed">Set Replay Speed</button>
+        </div>
+      </section>
+
+      <div class="status" id="status">Loading available datasets...</div>
+
+      <section class="summary-grid" id="summary"></section>
+
+      <section class="panel chart-panel">
+        <div id="chart"></div>
+      </section>
+
+      <section class="panel chart-panel">
+        <div id="paper-chart"></div>
+      </section>
+
+      <section class="panel table-panel">
+        <table>
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Close</th>
+              <th>Signal</th>
+              <th>Plan</th>
+              <th>Exit</th>
+              <th>Paper Pos</th>
+              <th>Equity</th>
+            </tr>
+          </thead>
+          <tbody id="preview-body"></tbody>
+        </table>
+      </section>
+    </div>
+
+    <script>
+      const providerSelect = document.getElementById("provider");
+      const symbolSelect = document.getElementById("symbol");
+      const dateSelect = document.getElementById("date");
+      const refreshSelect = document.getElementById("refresh-seconds");
+      const simulationSpeedSelect = document.getElementById("simulation-speed");
+      const applySpeedButton = document.getElementById("apply-speed");
+      const loadButton = document.getElementById("load");
+      const statusNode = document.getElementById("status");
+      const summaryNode = document.getElementById("summary");
+      const previewBody = document.getElementById("preview-body");
+
+      let seriesIndex = [];
+      let refreshHandle = null;
+      let replayRuntime = { available: false, control: {}, status: {} };
+
+      async function init() {
+        const response = await fetch("/api/series");
+        const payload = await response.json();
+        seriesIndex = payload.series || [];
+
+        if (!seriesIndex.length) {
+          statusNode.textContent = "No training datasets found. Build one first, then reload.";
+          return;
+        }
+
+        populateProviders();
+        refreshSelect.addEventListener("change", configureAutoRefresh);
+        applySpeedButton.addEventListener("click", applyReplaySpeed);
+        await loadReplayControl();
+        statusNode.textContent = "Datasets loaded.";
+        await loadCurrentSeries();
+        configureAutoRefresh();
+      }
+
+      function populateProviders() {
+        const providers = [...new Set(seriesIndex.map((item) => item.provider))];
+        fillSelect(providerSelect, providers);
+        providerSelect.addEventListener("change", populateSymbols);
+        symbolSelect.addEventListener("change", populateDates);
+        populateSymbols();
+      }
+
+      function populateSymbols() {
+        const provider = providerSelect.value;
+        const symbols = [
+          ...new Set(seriesIndex.filter((item) => item.provider === provider).map((item) => item.symbol)),
+        ];
+        fillSelect(symbolSelect, symbols);
+        populateDates();
+      }
+
+      function populateDates() {
+        const provider = providerSelect.value;
+        const symbol = symbolSelect.value;
+        const dates = seriesIndex
+          .filter((item) => item.provider === provider && item.symbol === symbol)
+          .map((item) => item.date)
+          .sort();
+        fillSelect(dateSelect, dates);
+      }
+
+      function fillSelect(select, options) {
+        select.innerHTML = "";
+        options.forEach((option) => {
+          const node = document.createElement("option");
+          node.value = option;
+          node.textContent = option;
+          select.appendChild(node);
+        });
+      }
+
+      async function loadCurrentSeries(isAutoRefresh = false) {
+        const provider = providerSelect.value;
+        const symbol = symbolSelect.value;
+        const date = dateSelect.value;
+        if (!provider || !symbol || !date) {
+          return;
+        }
+
+        const refreshLabel = Number(refreshSelect.value) > 0 ? ` Auto refresh ${refreshSelect.value}s.` : "";
+        statusNode.textContent = `${isAutoRefresh ? "Refreshing" : "Loading"} ${provider} ${symbol} ${date}...${refreshLabel}`;
+        const response = await fetch(`/api/data?provider=${encodeURIComponent(provider)}&symbol=${encodeURIComponent(symbol)}&date=${encodeURIComponent(date)}`);
+        const payload = await response.json();
+        replayRuntime = payload.replay || { available: false, control: {}, status: {} };
+        syncReplayControls(replayRuntime);
+        renderSummary(payload);
+        renderChart(payload.rows || [], payload.paper || {});
+        renderPaperChart(payload.paper || {});
+        renderTable(payload.rows || [], payload.paper || {});
+        const replayLabel = formatReplayStatus(replayRuntime);
+        statusNode.textContent = `Showing ${provider} ${symbol} ${date}.${refreshLabel}${replayLabel ? ` ${replayLabel}` : ""}`;
+      }
+
+      function configureAutoRefresh() {
+        if (refreshHandle) {
+          clearInterval(refreshHandle);
+          refreshHandle = null;
+        }
+        const seconds = Number(refreshSelect.value);
+        if (seconds > 0) {
+          refreshHandle = window.setInterval(() => {
+            loadCurrentSeries(true).catch((error) => {
+              statusNode.textContent = `Auto refresh failed: ${error}`;
+            });
+          }, seconds * 1000);
+        }
+      }
+
+      async function loadReplayControl() {
+        const response = await fetch("/api/replay-control");
+        if (!response.ok) {
+          replayRuntime = { available: false, control: {}, status: {} };
+          syncReplayControls(replayRuntime);
+          return;
+        }
+        replayRuntime = await response.json();
+        syncReplayControls(replayRuntime);
+      }
+
+      async function applyReplaySpeed() {
+        if (!replayRuntime.available) {
+          statusNode.textContent = "Replay speed controls are unavailable for this dataset.";
+          return;
+        }
+        const selected = simulationSpeedSelect.value;
+        const payload = selected === "pause"
+          ? { paused: true }
+          : { paused: false, step_delay_seconds: Number(selected) };
+        statusNode.textContent = "Updating replay speed...";
+        const response = await fetch("/api/replay-control", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        if (!response.ok) {
+          statusNode.textContent = "Replay speed update failed.";
+          return;
+        }
+        replayRuntime = await response.json();
+        syncReplayControls(replayRuntime);
+        await loadCurrentSeries(true);
+      }
+
+      function syncReplayControls(replay) {
+        const available = Boolean(replay && replay.available);
+        simulationSpeedSelect.disabled = !available;
+        applySpeedButton.disabled = !available;
+        if (!available) {
+          return;
+        }
+        const control = replay.control || {};
+        const selectedValue = control.paused ? "pause" : matchSpeedOption(control.step_delay_seconds);
+        if (selectedValue) {
+          simulationSpeedSelect.value = selectedValue;
+        }
+      }
+
+      function matchSpeedOption(value) {
+        const normalized = Number(value);
+        if (!Number.isFinite(normalized)) {
+          return "0.15";
+        }
+        const options = Array.from(simulationSpeedSelect.options).map((option) => option.value);
+        const exact = options.find((option) => option !== "pause" && Math.abs(Number(option) - normalized) < 1e-9);
+        if (exact) {
+          return exact;
+        }
+        return options
+          .filter((option) => option !== "pause")
+          .sort((left, right) => Math.abs(Number(left) - normalized) - Math.abs(Number(right) - normalized))[0] || "0.15";
+      }
+
+      function renderSummary(payload) {
+        const summary = payload.summary || {};
+        const paperSummary = (payload.paper || {}).summary || {};
+        const replay = payload.replay || {};
+        const replaySummary = replay.status || {};
+        const replayControl = replay.control || {};
+        const cards = [
+          ["Rows", summary.row_count ?? 0],
+          ["Labeled Rows", summary.labeled_row_count ?? 0],
+          ["Last Close", formatNumber(summary.last_close, 2)],
+          ["Total Volume", formatNumber(summary.total_volume, 6)],
+          ["Session High", formatNumber(summary.high_max, 2)],
+          ["Session Low", formatNumber(summary.low_min, 2)],
+          ["Paper Signals", paperSummary.signal_count ?? 0],
+          ["Paper Orders", paperSummary.order_count ?? 0],
+          ["Paper Position", formatSignedNumber(paperSummary.latest_target_position, 3)],
+          ["Paper Equity", formatNumber(paperSummary.latest_equity, 4)],
+          ["TP Hits", paperSummary.take_profit_hit_count ?? 0],
+          ["SL Hits", paperSummary.stop_loss_hit_count ?? 0],
+          ["TP Level", formatNumber(paperSummary.latest_take_profit_price, 2)],
+          ["Stop Level", formatNumber(paperSummary.latest_stop_loss_price, 2)],
+          ["Last Exit", paperSummary.latest_exit_reason || "—"],
+          ["Replay Progress", replay.available ? `${replaySummary.rows_streamed ?? 0}/${replaySummary.total_rows ?? 0}` : "—"],
+          ["Replay Speed", replay.available ? formatReplaySpeed(replayControl) : "—"],
+        ];
+        summaryNode.innerHTML = cards
+          .map(
+            ([label, value]) => `
+              <div class="panel summary-card">
+                <div class="summary-label">${label}</div>
+                <div class="summary-value">${value}</div>
+              </div>
+            `
+          )
+          .join("");
+      }
+
+      function renderChart(rows, paper) {
+        const times = rows.map((row) => row.time);
+        const signalLookup = new Map((paper.signals || []).map((signal) => [signal.candle_start, signal]));
+        const tradeSegments = buildTradeSegments(paper.signals || [], paper.ledger || []);
+        const candleTrace = {
+          type: "candlestick",
+          x: times,
+          open: rows.map((row) => row.open),
+          high: rows.map((row) => row.high),
+          low: rows.map((row) => row.low),
+          close: rows.map((row) => row.close),
+          name: "Candles",
+          increasing: { line: { color: "#1f7a5a" } },
+          decreasing: { line: { color: "#b6462f" } },
+          xaxis: "x",
+          yaxis: "y",
+        };
+
+        const volumeTrace = {
+          type: "bar",
+          x: times,
+          y: rows.map((row) => row.volume),
+          name: "Volume",
+          marker: {
+            color: rows.map((row) => (row.close >= row.open ? "rgba(31,122,90,0.55)" : "rgba(182,70,47,0.55)")),
+          },
+          xaxis: "x2",
+          yaxis: "y2",
+        };
+
+        const midTrace = {
+          type: "scatter",
+          mode: "lines+markers",
+          x: times,
+          y: rows.map((row) => row.mid_price),
+          name: "Top Mid",
+          line: { color: "#0d5c63", width: 2 },
+          marker: { size: 6 },
+          xaxis: "x",
+          yaxis: "y",
+        };
+
+        const buySignals = rows
+          .filter((row) => {
+            const signal = signalLookup.get(row.time);
+            return signal && Number(signal.position_delta) > 0;
+          });
+        const sellSignals = rows
+          .filter((row) => {
+            const signal = signalLookup.get(row.time);
+            return signal && Number(signal.position_delta) < 0;
+          });
+
+        const buyTrace = {
+          type: "scatter",
+          mode: "markers",
+          x: buySignals.map((row) => row.time),
+          y: buySignals.map((row) => (row.low ?? row.close) * 0.999),
+          name: "Paper Buy",
+          marker: { color: "#1f7a5a", size: 11, symbol: "triangle-up" },
+          xaxis: "x",
+          yaxis: "y",
+        };
+
+        const sellTrace = {
+          type: "scatter",
+          mode: "markers",
+          x: sellSignals.map((row) => row.time),
+          y: sellSignals.map((row) => (row.high ?? row.close) * 1.001),
+          name: "Paper Sell",
+          marker: { color: "#b6462f", size: 11, symbol: "triangle-down" },
+          xaxis: "x",
+          yaxis: "y",
+        };
+        const takeProfitTrace = buildHorizontalSegmentTrace(
+          tradeSegments,
+          "takeProfitPrice",
+          "Take Profit",
+          "#1f7a5a"
+        );
+        const stopLossTrace = buildHorizontalSegmentTrace(
+          tradeSegments,
+          "stopLossPrice",
+          "Stop Loss",
+          "#b6462f"
+        );
+        const takeProfitExitTrace = buildExitTrace(
+          paper.ledger || [],
+          rows,
+          "take_profit",
+          "TP Hit",
+          "#1f7a5a",
+          "star"
+        );
+        const stopLossExitTrace = buildExitTrace(
+          paper.ledger || [],
+          rows,
+          "stop_loss",
+          "Stop Hit",
+          "#b6462f",
+          "x"
+        );
+
+        Plotly.newPlot("chart", [
+          candleTrace,
+          midTrace,
+          takeProfitTrace,
+          stopLossTrace,
+          buyTrace,
+          sellTrace,
+          takeProfitExitTrace,
+          stopLossExitTrace,
+          volumeTrace,
+        ], {
+          paper_bgcolor: "rgba(0,0,0,0)",
+          plot_bgcolor: "rgba(255,255,255,0.72)",
+          margin: { l: 56, r: 20, t: 24, b: 40 },
+          showlegend: true,
+          legend: { orientation: "h" },
+          xaxis: {
+            domain: [0, 1],
+            rangeslider: { visible: false },
+            showgrid: false,
+          },
+          yaxis: {
+            domain: [0.34, 1],
+            title: "Price",
+            gridcolor: "rgba(198,208,199,0.45)",
+          },
+          xaxis2: {
+            domain: [0, 1],
+            anchor: "y2",
+            matches: "x",
+            showgrid: false,
+          },
+          yaxis2: {
+            domain: [0, 0.24],
+            title: "Volume",
+            gridcolor: "rgba(198,208,199,0.45)",
+          },
+        }, { responsive: true });
+      }
+
+      function renderPaperChart(paper) {
+        const ledger = paper.ledger || [];
+        const traces = [
+          {
+            type: "scatter",
+            mode: "lines+markers",
+            x: ledger.map((row) => row.candle_start),
+            y: ledger.map((row) => row.equity),
+            name: "Equity",
+            line: { color: "#0d5c63", width: 3 },
+            marker: { size: 7 },
+            yaxis: "y",
+          },
+          {
+            type: "bar",
+            x: ledger.map((row) => row.candle_start),
+            y: ledger.map((row) => row.target_position),
+            name: "Target Position",
+            marker: {
+              color: ledger.map((row) => Number(row.target_position) >= 0 ? "rgba(31,122,90,0.45)" : "rgba(182,70,47,0.45)"),
+            },
+            yaxis: "y2",
+          },
+          {
+            type: "scatter",
+            mode: "lines",
+            x: ledger.map((row) => row.candle_start),
+            y: ledger.map((row) => row.net_return),
+            name: "Net Return",
+            line: { color: "#b18442", width: 2, dash: "dot" },
+            yaxis: "y3",
+          },
+        ];
+
+        Plotly.newPlot("paper-chart", traces, {
+          paper_bgcolor: "rgba(0,0,0,0)",
+          plot_bgcolor: "rgba(255,255,255,0.72)",
+          margin: { l: 56, r: 56, t: 24, b: 40 },
+          showlegend: true,
+          legend: { orientation: "h" },
+          xaxis: {
+            showgrid: false,
+          },
+          yaxis: {
+            title: "Equity",
+            gridcolor: "rgba(198,208,199,0.45)",
+          },
+          yaxis2: {
+            title: "Position",
+            overlaying: "y",
+            side: "right",
+            gridcolor: "rgba(0,0,0,0)",
+          },
+          yaxis3: {
+            title: "Net Return",
+            overlaying: "y",
+            side: "right",
+            position: 0.96,
+            gridcolor: "rgba(0,0,0,0)",
+          },
+          annotations: !ledger.length ? [{
+            text: "No paper ledger rows for this day.",
+            x: 0.5,
+            y: 0.5,
+            xref: "paper",
+            yref: "paper",
+            showarrow: false,
+            font: { color: "#5a675f" },
+          }] : [],
+        }, { responsive: true });
+      }
+
+      function renderTable(rows, paper) {
+        const signalLookup = new Map((paper.signals || []).map((signal) => [signal.candle_start, signal]));
+        const ledgerLookup = new Map((paper.ledger || []).map((row) => [row.candle_start, row]));
+        previewBody.innerHTML = rows
+          .map((row) => {
+            const signal = signalLookup.get(row.time);
+            const ledger = ledgerLookup.get(row.time);
+            const signalClass = Number(signal?.target_position ?? 0) > 0
+              ? "long"
+              : Number(signal?.target_position ?? 0) < 0
+                ? "short"
+                : "flat";
+            const signalText = signal
+              ? `${String(signal.order_reason || "plan").replace("_", " ")} ${formatSignedNumber(signal.target_position, 3)}`
+              : "—";
+            const planText = signal && signal.trade_plan_status === "active"
+              ? `TP ${formatNumber(signal.take_profit_price, 2)} / SL ${formatNumber(signal.stop_loss_price, 2)}`
+              : "—";
+            const exitText = ledger?.exit_reason
+              ? `${String(ledger.exit_reason).replace("_", " ")} @ ${formatNumber(ledger.exit_price, 2)}`
+              : "—";
+            return `
+              <tr>
+                <td>${row.time}</td>
+                <td>${formatNumber(row.close, 2)}</td>
+                <td><span class="pill ${signalClass}">${signalText}</span></td>
+                <td>${planText}</td>
+                <td>${exitText}</td>
+                <td>${formatSignedNumber(signal?.target_position ?? ledger?.target_position, 3)}</td>
+                <td>${formatNumber(ledger?.equity, 4)}</td>
+              </tr>
+            `;
+          })
+          .join("");
+      }
+
+      function buildTradeSegments(signals, ledger) {
+        const orderedSignals = [...signals].sort((left, right) => String(left.candle_start).localeCompare(String(right.candle_start)));
+        const orderedLedger = [...ledger].sort((left, right) => String(left.candle_start).localeCompare(String(right.candle_start)));
+        return orderedSignals
+          .filter((signal) => signal.trade_plan_status === "active" && Number(signal.target_position) !== 0 && Number(signal.position_delta) !== 0)
+          .map((signal) => {
+            const exitRow = orderedLedger.find((row) =>
+              String(row.candle_start) >= String(signal.candle_start)
+              && typeof row.exit_reason === "string"
+              && row.exit_reason !== ""
+            );
+            return {
+              startTime: signal.candle_start,
+              endTime: exitRow?.candle_start || signal.candle_start,
+              stopLossPrice: Number(signal.stop_loss_price),
+              takeProfitPrice: Number(signal.take_profit_price),
+              direction: Number(signal.direction || 0),
+            };
+          });
+      }
+
+      function buildHorizontalSegmentTrace(segments, key, name, color) {
+        const x = [];
+        const y = [];
+        segments.forEach((segment) => {
+          const value = Number(segment[key]);
+          if (Number.isNaN(value)) {
+            return;
+          }
+          x.push(segment.startTime, segment.endTime, null);
+          y.push(value, value, null);
+        });
+        return {
+          type: "scatter",
+          mode: "lines",
+          x,
+          y,
+          name,
+          line: { color, width: 2, dash: "dot" },
+          xaxis: "x",
+          yaxis: "y",
+        };
+      }
+
+      function buildExitTrace(ledger, rows, reasonPrefix, name, color, symbol) {
+        const candleLookup = new Map(rows.map((row) => [row.time, row]));
+        const matches = ledger.filter((row) => String(row.exit_reason || "").startsWith(reasonPrefix));
+        return {
+          type: "scatter",
+          mode: "markers",
+          x: matches.map((row) => row.candle_start),
+          y: matches.map((row) => {
+            const exitPrice = Number(row.exit_price);
+            if (!Number.isNaN(exitPrice)) {
+              return exitPrice;
+            }
+            return candleLookup.get(row.candle_start)?.close ?? null;
+          }),
+          name,
+          marker: { color, size: 11, symbol },
+          xaxis: "x",
+          yaxis: "y",
+        };
+      }
+
+      function formatReplayStatus(replay) {
+        if (!replay || !replay.available) {
+          return "";
+        }
+        const status = replay.status || {};
+        const control = replay.control || {};
+        const progress = `${status.rows_streamed ?? 0}/${status.total_rows ?? 0}`;
+        const speed = formatReplaySpeed(control);
+        const state = control.paused ? "paused" : "running";
+        return `Replay ${state} ${progress} at ${speed}.`;
+      }
+
+      function formatReplaySpeed(control) {
+        if (!control || control.paused) {
+          return "paused";
+        }
+        const delay = Number(control.step_delay_seconds);
+        if (!Number.isFinite(delay)) {
+          return "—";
+        }
+        if (delay === 0) {
+          return "instant";
+        }
+        if (delay < 1) {
+          return `${Math.round(delay * 1000)} ms/bar`;
+        }
+        return `${delay.toFixed(2)} s/bar`;
+      }
+
+      function formatNumber(value, digits = 2) {
+        if (value === null || value === undefined || Number.isNaN(value)) {
+          return "—";
+        }
+        return Number(value).toLocaleString(undefined, {
+          maximumFractionDigits: digits,
+          minimumFractionDigits: digits > 0 ? Math.min(digits, 2) : 0,
+        });
+      }
+
+      function formatSignedNumber(value, digits = 2) {
+        if (value === null || value === undefined || Number.isNaN(Number(value))) {
+          return "—";
+        }
+        const number = Number(value);
+        const formatted = number.toLocaleString(undefined, {
+          maximumFractionDigits: digits,
+          minimumFractionDigits: digits > 0 ? Math.min(digits, 2) : 0,
+        });
+        return number > 0 ? `+${formatted}` : formatted;
+      }
+
+      loadButton.addEventListener("click", loadCurrentSeries);
+      init().catch((error) => {
+        statusNode.textContent = `Failed to load viewer data: ${error}`;
+      });
+    </script>
+  </body>
+</html>

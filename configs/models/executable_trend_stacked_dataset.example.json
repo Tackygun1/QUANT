@@ -1,0 +1,86 @@
+{
+  "input_root": "data/features",
+  "prediction_root": "data/models/walk_forward",
+  "output_root": "data/features",
+  "input_dataset_name": "market_supervised",
+  "output_dataset_name": "market_executable_trend_stacked",
+  "providers": ["coinbase"],
+  "symbols": ["BTC-USD"],
+  "prediction_sources": [
+    {
+      "family": "hybrid_transformers",
+      "model_name": "quantile_forecaster",
+      "alias": "hybrid_transformer",
+      "source_columns": [
+        "prediction_return_q50_1_bar",
+        "prediction_return_spread_1_bar",
+        "prediction_return_q50_6_bar",
+        "prediction_return_spread_6_bar",
+        "prediction_return_q50_24_bar",
+        "prediction_return_spread_24_bar",
+        "prediction_return_q50_96_bar",
+        "prediction_return_spread_96_bar",
+        "prediction_trend_state_6_bar",
+        "prediction_trend_state_margin_6_bar",
+        "prediction_probability_downtrend_6_bar",
+        "prediction_probability_chop_6_bar",
+        "prediction_probability_uptrend_6_bar",
+        "prediction_trend_state_confidence_6_bar",
+        "prediction_trend_state_24_bar",
+        "prediction_trend_state_margin_24_bar",
+        "prediction_probability_downtrend_24_bar",
+        "prediction_probability_chop_24_bar",
+        "prediction_probability_uptrend_24_bar",
+        "prediction_trend_state_confidence_24_bar",
+        "prediction_triple_barrier_6_bar",
+        "prediction_triple_barrier_margin_6_bar",
+        "prediction_probability_stop_6_bar",
+        "prediction_probability_no_hit_6_bar",
+        "prediction_probability_profit_6_bar",
+        "prediction_triple_barrier_confidence_6_bar"
+      ]
+    },
+    {
+      "family": "tabular",
+      "model_name": "histgb_trend_state_fast",
+      "alias": "fast_trend_state",
+      "source_columns": [
+        "prediction",
+        "prediction_trend_state_margin",
+        "prediction_probability_downtrend",
+        "prediction_probability_chop",
+        "prediction_probability_uptrend",
+        "prediction_probability_max",
+        "prediction_confidence"
+      ]
+    },
+    {
+      "family": "tabular",
+      "model_name": "histgb_trend_state",
+      "alias": "slow_trend_state",
+      "source_columns": [
+        "prediction",
+        "prediction_trend_state_margin",
+        "prediction_probability_downtrend",
+        "prediction_probability_chop",
+        "prediction_probability_uptrend",
+        "prediction_probability_max",
+        "prediction_confidence"
+      ]
+    },
+    {
+      "family": "tabular",
+      "model_name": "histgb_triple_barrier_fast",
+      "alias": "fast_triple_barrier",
+      "source_columns": [
+        "prediction",
+        "prediction_triple_barrier_margin",
+        "prediction_probability_stop",
+        "prediction_probability_no_hit",
+        "prediction_probability_profit",
+        "prediction_probability_max",
+        "prediction_confidence"
+      ]
+    }
+  ]
+}

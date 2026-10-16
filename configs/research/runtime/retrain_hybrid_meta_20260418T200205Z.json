@@ -1,0 +1,20 @@
+{
+  "input_root": "experiments/retrains/coinbase/BTC-USD/20260418T200205Z/features",
+  "output_root": "experiments/retrains/coinbase/BTC-USD/20260418T200205Z/models",
+  "dataset_name": "market_hybrid_stacked",
+  "providers": ["coinbase"],
+  "symbols": ["BTC-USD"],
+  "model_names": [
+    "lightgbm_hybrid_direction_meta"
+  ],
+  "feature_groups": [
+    "baseline_core",
+    "layered_context",
+    "hybrid_transformer_oof"
+  ],
+  "validation_fraction": 0.2,
+  "minimum_rows": 512,
+  "sample_weight_scheme": "hmm_regime_target_balance",
+  "regime_change_threshold": 0.35,
+  "regime_change_boost": 1.5
+}

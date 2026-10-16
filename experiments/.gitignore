@@ -1,0 +1,9 @@
+# Keep experiment outputs local by default. Commit only README files, specs,
+# and small hand-curated manifests that are intentionally useful for review.
+*
+!/.gitignore
+!/README.md
+!/specs/
+!/specs/**
+!/**/*.example.json
+!/**/*.md

@@ -1,0 +1,7 @@
+{
+  "output_root": "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/reports/random_guess_comparison",
+  "reference_artifact_dir": "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/models/walk_forward/meta_models/lightgbm_hybrid_direction_meta/coinbase/BTC-USD/20260818T004349Z",
+  "reference_backtest_dir": "experiments/retrains/coinbase/BTC-USD/20260817T133422Z_calibrated_dd1/reports/oof_final/lightgbm_hybrid_direction_meta/coinbase/BTC-USD/20260818T004408Z",
+  "seed": 20260818,
+  "simulations_per_baseline": 500
+}

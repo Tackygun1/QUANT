@@ -1,0 +1,7 @@
+{
+  "provider": "coinbase",
+  "products": ["BTC-USD", "ETH-USD"],
+  "channels": ["trades", "ticker", "level2", "candles"],
+  "output_root": "data/raw",
+  "max_backoff_seconds": 30.0
+}

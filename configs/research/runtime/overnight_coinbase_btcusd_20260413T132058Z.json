@@ -1,0 +1,48 @@
+{
+  "workspace_root": "experiments/overnight/coinbase/BTC-USD/20260413T132058Z",
+  "clean_start": false,
+  "data": {
+    "provider": "coinbase",
+    "product": "BTC-USD",
+    "candle_interval": "5m",
+    "candle_start_time": "2026-01-13T13:20:58Z",
+    "trade_start_time": "2026-04-10T13:20:58Z",
+    "end_time": "2026-04-13T13:20:58Z",
+    "request_timeout_seconds": 20.0,
+    "request_pause_seconds": 0.02
+  },
+  "search": {
+    "duration_hours": 8.0,
+    "validation_fraction": 0.2,
+    "minimum_rows": 512,
+    "transformer_recent_rows": 2048,
+    "initial_random_candidates": 3,
+    "elite_count": 2,
+    "mutation_power": 0.35,
+    "retry_attempts": 3,
+    "retry_pause_seconds": 20.0,
+    "seed": 7,
+    "model_cycle": [
+      "histgb_return",
+      "ridge_return",
+      "histgb_return",
+      "transformer_return_forecaster"
+    ],
+    "fee_bps": 1.0,
+    "slippage_bps": 0.5,
+    "sizing": {
+      "volatility_column": "rolling_return_std_5_bar",
+      "volatility_target": 0.0015,
+      "volatility_floor": 0.0005,
+      "max_abs_position": 1.0,
+      "signal_threshold_bps": 0.5,
+      "signal_scale_bps": 5.0,
+      "max_trade_risk_fraction": 0.01,
+      "stop_loss_sigma": 2.0,
+      "stop_loss_floor_bps": 100.0,
+      "max_position_change": 0.5,
+      "max_daily_loss_fraction": 0.02,
+      "max_portfolio_drawdown_fraction": 0.1
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "input_root": "experiments/retrains/coinbase/BTC-USD/20260418T200205Z/features",
+  "prediction_root": "experiments/retrains/coinbase/BTC-USD/20260418T200205Z/models",
+  "output_root": "experiments/retrains/coinbase/BTC-USD/20260418T200205Z/features",
+  "input_dataset_name": "market_supervised",
+  "output_dataset_name": "market_hybrid_stacked",
+  "providers": ["coinbase"],
+  "symbols": ["BTC-USD"],
+  "prediction_sources": [
+    {
+      "family": "hybrid_transformers",
+      "model_name": "quantile_forecaster",
+      "alias": "hybrid_transformer",
+      "source_columns": [
+        "prediction_return_q10_1_bar",
+        "prediction_return_q50_1_bar",
+        "prediction_return_q90_1_bar",
+        "prediction_return_spread_1_bar",
+        "prediction_return_q10_6_bar",
+        "prediction_return_q50_6_bar",
+        "prediction_return_q90_6_bar",
+        "prediction_return_spread_6_bar",
+        "prediction_return_q10_24_bar",
+        "prediction_return_q50_24_bar",
+        "prediction_return_q90_24_bar",
+        "prediction_return_spread_24_bar",
+        "prediction_return_q10_96_bar",
+        "prediction_return_q50_96_bar",
+        "prediction_return_q90_96_bar",
+        "prediction_return_spread_96_bar"
+      ]
+    }
+  ]
+}
