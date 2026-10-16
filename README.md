@@ -1,6 +1,8 @@
 # QUANT
 
-QUANT is currently in scaffold stage. The repository now has a Python-first shell aimed at a low-cost ML trading bot: venue-native market data ingestion, feature and label pipelines, hybrid modeling, leak-resistant evaluation, backtesting, execution, and risk controls.
+This Repo consists of the code used in my Extended Essay.
+Downloading this repo and following the directions should enable anyone to use the models I talk about in my essay.
+Note: AI was used to help develope this code. This insludes: Bug fixing, graph creation, structuring the repo, writing reports, etc 
 
 ## Status
 
